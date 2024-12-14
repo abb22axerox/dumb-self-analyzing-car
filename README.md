@@ -1,4 +1,8 @@
-#AI-Driven RC Car
+**#AI-Driven RC Car#**
+
+
+
+
 **A smart car that interprets its surroundings:**
 This project aims to design and program a remote-controlled car that, using AI technology and various sensors, can interact with its environment. The car can identify objects, take pictures of its surroundings, and describe what it sees through a speaker.
 
