@@ -1,4 +1,4 @@
-**#AI-Driven RC Car#**
+# AI-Driven RC Car
 
 
 
