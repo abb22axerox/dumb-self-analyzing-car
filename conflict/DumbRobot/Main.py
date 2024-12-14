@@ -7,10 +7,15 @@ from ImageProcessor import ImageProcessor
 from AudioRecorder import AudioRecorder
 from WebcamCapturer import WebcamCapturer
 from AudioPlayer import AudioPlayer
+import CarController
+
+#cd ~/Desktop/Programmering/Python/dumb-self-analyzing-car/conflict/DumbRobot && export OPENAI_API_KEY="sk-svcacct-dO8EKFhbR50o0EwRjz3r80imib9nqTaaeUPcZAr9BwmW08iHhTuQpq9f8xDxGT3BlbkFJ3Ee55z90UJH73WocK3DrPwMCgiIL7hk3l4vWo6wmNTlpYdRL9TLv9Dk8oyxoAA" && source myenv/bin/activate
+#sudo python3 Main.py
 
 program_running = True
 audio_player = AudioPlayer()
 ai = AIActions(api_key="sk-svcacct-dO8EKFhbR50o0EwRjz3r80imib9nqTaaeUPcZAr9BwmW08iHhTuQpq9f8xDxGT3BlbkFJ3Ee55z90UJH73WocK3DrPwMCgiIL7hk3l4vWo6wmNTlpYdRL9TLv9Dk8oyxoAA")
+current_car_action = 'stationary'
 
 response_count = 1
 frame_count = 1
@@ -48,9 +53,12 @@ def on_image_captured(image_path):
     print(description)
     print(action)
 
-    # # 2. Convert AI response text back to audio and play it
-    # if action != 'forward':
-    #     speak(description, current_voice)
+    # 2. Update car controller state
+    current_car_action = action
+
+    # 3. Convert AI response text back to audio and play it
+    if action != 'forward':
+        speak(description, current_voice)
 
 def on_audio_recorded(audio_path):
     global response_count
@@ -108,6 +116,17 @@ def image_loop(webcam):
 
     webcam.release()
 
+def car_controller_loop():
+    while program_running:
+        if(current_car_action == 'forward'):
+            drive_car(0, 1)
+        elif(current_car_action == 'left'):
+            drive_car(-1, 0)
+        elif(current_car_action == 'right'):
+            drive_car(1, 0)
+        else:
+            drive_car(0, 0)
+
 def check_audio(audio_recorder):
     # Clear old audio once at the start
     audio_recorder.clear_old_audio()
@@ -129,15 +148,18 @@ if __name__ == "__main__":
     input_thread = threading.Thread(target=check_input)
     audio_thread = threading.Thread(target=check_audio, args=(audio_recorder,))
     image_thread = threading.Thread(target=image_loop, args=(webcam,))
+    car_controller_thread = threading.Thread(target=car_controller_loop, args=())
 
     # Start all threads
     input_thread.start()
     audio_thread.start()
     image_thread.start()
+    car_controller_thread.start()
 
     # Wait for all threads to complete
     input_thread.join()
     audio_thread.join()
     image_thread.join()
+    car_controller_thread.join()
 
     print("Program exited")
