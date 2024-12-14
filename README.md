@@ -1,19 +1,19 @@
-#AI-Driven RC Car#
-**A smart car that interprets its surroundings**
+#AI-Driven RC Car
+**A smart car that interprets its surroundings:**
 This project aims to design and program a remote-controlled car that, using AI technology and various sensors, can interact with its environment. The car can identify objects, take pictures of its surroundings, and describe what it sees through a speaker.
 
-**Team Members**
+**Team Members:**
 William – Responsible for the car's construction and hardware assembly.
 Axel – Responsible for Arduino coding and integration of electronic components.
 Noah – Responsible for programming AI models for object recognition and software development.
 
-**Features**
+**Features:**
 Object Recognition: The camera identifies objects in the car's surroundings using AI and machine learning.
 Photography: The car captures images of the environment and stores them for analysis.
 Spoken Feedback: The speaker describes what the car sees, for example: "I see a person in front of me."
 Sensor Integration: Built-in sensors help the car navigate and detect obstacles.
 
-**Components and Technology**
+**Components and Technology:**
 Hardware:
 Remote-controlled car as the base
 Camera for image capturing
@@ -25,7 +25,7 @@ Python for AI and image recognition
 Arduino IDE for microcontroller programming
 Machine learning libraries: TensorFlow or OpenCV
 
-**Installation and Execution**
+**Installation and Execution:**
 Requirements
 Arduino IDE
 Python 3.10+
@@ -51,14 +51,14 @@ bash
 Copy code
 python ai_car.py
 
-**Usage**
+**Usage:**
 Start the car using the remote control.
 When the car identifies an object in its surroundings:
 It takes a photo.
 It provides a verbal description of the object through the speaker.
 The car navigates autonomously and avoids obstacles using sensors.
 
-**Future Improvements**
+**Future Improvements:**
 Implement real-time mapping of the environment.
 Enhance the car’s speech capabilities with natural language understanding.
 Add support for multiple cameras to achieve a 360° field of view.
