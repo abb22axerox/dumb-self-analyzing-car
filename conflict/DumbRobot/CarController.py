@@ -19,7 +19,8 @@ def drive_car(steering_direction, motor_speed):
     clamped_steering_direction = max(-1.0, min(1.0, steering_direction))
     clamped_motor_speed = max(0.0, min(1.0, motor_speed))
 
-    if (clamped_steering_direction != steering_direction || clamped_motor_speed != motor_speed) print("invalid motor_speed or steering_direction values. Clamped to valid range.")
+    if (clamped_steering_direction != steering_direction or clamped_motor_speed != motor_speed):
+        print("invalid motor_speed or steering_direction values. Clamped to valid range.")
 
     # Set the servo position for steering
     servo.value = clamped_steering_direction  # -1.0 is full left, 0.0 is center, 1.0 is full right

@@ -119,13 +119,13 @@ def image_loop(webcam):
 def car_controller_loop():
     while program_running:
         if(current_car_action == 'forward'):
-            drive_car(0, 1)
+            CarController.drive_car(0, 1)
         elif(current_car_action == 'left'):
-            drive_car(-1, 0)
+            CarController.drive_car(-1, 0)
         elif(current_car_action == 'right'):
-            drive_car(1, 0)
+            CarController.drive_car(1, 0)
         else:
-            drive_car(0, 0)
+            CarController.drive_car(0, 0)
 
 def check_audio(audio_recorder):
     # Clear old audio once at the start
