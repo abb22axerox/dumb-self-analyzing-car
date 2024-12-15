@@ -3,8 +3,9 @@ from pydub.playback import play
 import threading
 
 class AudioPlayer:
-    def __init__(self):
+    def __init__(self, volume_db):
         self.is_playing = False  # Tracks if audio is currently playing
+        self.volume_db = volume_db
 
     def play_audio(self, file_path):
         """
@@ -18,6 +19,7 @@ class AudioPlayer:
             try:
                 # Load and play the audio file
                 audio = AudioSegment.from_file(file_path)
+                audio = audio + self.volume_db
                 play(audio)
             except Exception as e:
                 print(f"Error playing audio: {e}")

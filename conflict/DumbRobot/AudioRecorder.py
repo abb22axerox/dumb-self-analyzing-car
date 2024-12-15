@@ -4,7 +4,7 @@ import wave
 import pyaudio
 
 class AudioRecorder:
-    def __init__(self, record_seconds=5, record_cooldown=10, chunk=1024, channels=1, rate=44100, audio_folder="CapturedAudio"):
+    def __init__(self, record_seconds=5, record_cooldown=10, chunk=1024, channels=1, rate=44100, audio_folder_path="CapturedAudio"):
         """
         output_filename: Name of the output .wav file
         record_seconds: Duration of recording
@@ -12,10 +12,10 @@ class AudioRecorder:
         chunk: Buffer size
         channels: Number of audio channels
         rate: Sampling rate in Hz
-        audio_folder: Path to the folder where captured audio is stored
+        audio_folder_path: Path to the folder where captured audio is stored
         """
-        self.audio_folder = audio_folder
-        os.makedirs(self.audio_folder, exist_ok=True)  # Ensure folder exists
+        self.audio_folder_path = audio_folder_path
+        os.makedirs(self.audio_folder_path, exist_ok=True)  # Ensure folder exists
         
         self.record_seconds = record_seconds
         self.record_cooldown = record_cooldown
@@ -24,8 +24,8 @@ class AudioRecorder:
         self.rate = rate
 
     def clear_old_audio(self):
-        # Delete all images in the audio_folder
-        for file_path in glob.glob(os.path.join(self.audio_folder, "*")):
+        # Delete all images in the audio_folder_path
+        for file_path in glob.glob(os.path.join(self.audio_folder_path, "*")):
             os.remove(file_path)
 
     def record_audio(self, output_prefix="recording", output_suffix="999", on_audio_recorded=None):
@@ -33,7 +33,7 @@ class AudioRecorder:
 
         # Construct full output path
         filename = f"{output_prefix}_{output_suffix}.wav"
-        output_path = os.path.join(self.audio_folder, filename)
+        output_path = os.path.join(self.audio_folder_path, filename)
 
         # Open stream
         stream = p.open(format=pyaudio.paInt16,

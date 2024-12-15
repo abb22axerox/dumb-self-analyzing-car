@@ -2,11 +2,12 @@ import base64
 import json
 from openai import OpenAI
 
-voices = ['alloy', 'echo', 'fable', 'onyx', 'nova', 'shimmer', 
+VOICES = ['alloy', 'echo', 'fable', 'onyx', 'nova', 'shimmer', 
           'coral', 'verse', 'ballad', 'ash', 'sage']
           
 class AIActions:
-    def __init__(self, api_key):
+    def __init__(self, language, api_key):
+        self.language = language
         self.client = OpenAI(api_key=api_key)
 
     def audio_to_text(self, audio_path):
@@ -56,14 +57,14 @@ class AIActions:
                 "text": (
                     "Look at the image provided and respond in the following JSON format:\n"
                     "{\n"
-                    "  \"description\": \"A detailed description of what is in the image, focusing heavily on one small detail.\",\n"
+                    "  \"description\": \"A detailed description of what is in the image, focusing heavily on one small detail. For your response, use the following language: + " + self.language + "\",\n"
                     "  \"action\": \"left\"/\"right\"/\"forward\"\n"
                     "}\n\n"
                     "The camera is mounted on a small car, so consider the perspective as being low to the ground.\n"
                     "If there is a wall or obstacle directly ahead, choose either \"left\" or \"right\" to avoid steering the car into a corner.\n"
                     "Keep in mind, the camera from which this picture is taken is placed on top of a small car, so only move to the side if any obstacle is VERY close to the camera.\n"
                     "If there is no immediate wall or obstacle blocking forward movement, choose \"forward\".\n"
-                    "Respond in swedish only. NO ENGLISH, ONLY RESPOND IN SWEDISH!\n"
+                    "Write the description in swedish ONLY. The action should still be written in english.\n"
                     "Now, analyze the image carefully and produce ONLY the JSON object as described."
                 )
             },
@@ -103,6 +104,68 @@ class AIActions:
         else:
             print("Could not find a JSON object in the response.")
             return None, None
+        
+    def ask_about_wall_and_hand_in_image(self, image_path):
+        # Encode image in base64
+        base64_image = self._encode_image(image_path)
+
+        # Updated prompt asking about walls, directions, and hand presence, requesting a JSON response
+        prompt = [
+            {
+                "type": "text",
+                "text": (
+                    "Look at the image provided and respond in the following JSON format:\n"
+                    "{\n"
+                    "  \"description\": \"A detailed description of what is in the image, focusing heavily on one small detail. For your response, use the following language: + " + self.language + "\",\n"
+                    "  \"action\": \"left\"/\"right\"/\"forward\",\n"
+                    "  \"hand_is_present\": true/false\n"
+                    "}\n\n"
+                    "The camera is mounted on a small car, so consider the perspective as being low to the ground.\n"
+                    "If there is a wall or obstacle directly ahead, choose either \"left\" or \"right\" to avoid steering the car into a corner.\n"
+                    "If there is no immediate wall or obstacle blocking forward movement, choose \"forward\".\n"
+                    "Additionally, analyze whether a human hand is visible in the image. If it is, set \"hand_is_present\" to true; otherwise, set it to false.\n"
+                    "Write the description in Swedish ONLY. The action and hand presence should still be written in English.\n"
+                    "Now, analyze the image carefully and produce ONLY the JSON object as described."
+                )
+            },
+            {
+                "type": "image_url",
+                "image_url": {
+                    "url": f"data:image/jpeg;base64,{base64_image}"
+                },
+            },
+        ]
+
+        # Send the prompt to the AI model
+        response = self.client.chat.completions.create(
+            model="gpt-4o-mini",
+            messages=[
+                {
+                    "role": "user",
+                    "content": prompt
+                }
+            ],
+        )
+        response_text = response.choices[0].message.content.strip()
+
+        # Find the indices of the actual JSON object
+        start = response_text.find('{')
+        end = response_text.rfind('}')
+
+        if start != -1 and end != -1:
+            json_content = response_text[start:end + 1].strip()
+            try:
+                result = json.loads(json_content)
+                description = result.get("description", "")
+                action = result.get("action", "")
+                hand_is_present = result.get("hand_is_present", False)
+                return description, action, hand_is_present
+            except json.JSONDecodeError:
+                print("The AI did not return valid JSON.")
+                return None, None, None
+        else:
+            print("Could not find a JSON object in the response.")
+            return None, None, None
     
     def ask(self, text):
         # A generic method to send text queries to the AI
@@ -133,10 +196,16 @@ class AIActions:
                     "role": "system",
                     "content": (
                         "You are a helpful assistant that answers user queries with a short answer, and can optionally change its voice "
-                        "If any specific name is mentioned, like Judith Beck Johansson, look up as much information as possible online, and respond using as detailed of a description of the person as possible. An incredible amount of detail."
+                        "If any specific name is mentioned, look up as much information as possible online, preferably from the MrKoll website, and respond using as detailed of a description of the person as possible. An incredible amount of detail."
+                        "If the name Judith is mentioned, then the full name is Judith Maj Linn Beck Johansson"
+                        "If the name Jeton is mentioned, then the full name is Jeton Mustini. In this case don't look up information, just tell some joke about him and Kalle Kula"
+                        "If the name Lars is mentioned, then the full name is Lars Fryxell"
+                        "If the name Joakim is mentioned, then the full name is Joakim Flink"
+                        "If the name Sofie is mentioned, then the full name is Sofie Ahlberg"
                         "for Text-to-Speech purposes. The user may request a specific voice from the following list: "
-                        f"{', '.join(voices)}."
-                        "ANSWER ONLY USING JSON FORMAT. THERE SHOULD BE A 'response', AS WELL AS A 'voice' IF REQUESTED BY THE USER. OTHERWISE, DONT INCLUDE THE 'voice' IN THE JSON!!!!!"
+                        f"{', '.join(VOICES)}."
+                        "ANSWER ONLY USING JSON FORMAT. THERE SHOULD BE A 'response', AS WELL AS A 'voice' IF REQUESTED BY THE USER. OTHERWISE, DONT INCLUDE THE 'voice' IN THE JSON!"
+                        "For your 'response', use the following language: + " + self.language
                     )
                 }
             ]
@@ -170,6 +239,9 @@ class AIActions:
             result = json.loads(response_text)
             response_message = result.get("response", "")
             voice = result.get("voice", None)
+            if not voice == None:
+                if not voice in response_message.lower():
+                    voice = None
         except json.JSONDecodeError:
             print("The AI did not return valid JSON. Returning raw response.")
             response_message = response_text

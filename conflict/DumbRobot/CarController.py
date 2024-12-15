@@ -4,9 +4,15 @@ from gpiozero import PWMOutputDevice, Servo
 MOTOR_PIN = 18  # Replace with your motor GPIO pin
 SERVO_PIN = 17  # Replace with your servo GPIO pin
 
+# Settings
+do_use_servo = False
+do_use_motor = True
+
 # Initialize components
-motor = PWMOutputDevice(MOTOR_PIN)
-servo = Servo(SERVO_PIN)
+if do_use_servo:
+    servo = Servo(SERVO_PIN)
+if do_use_motor:
+    motor = PWMOutputDevice(MOTOR_PIN)
 
 def drive_car(steering_direction, motor_speed):
     """
@@ -23,7 +29,9 @@ def drive_car(steering_direction, motor_speed):
         print("invalid motor_speed or steering_direction values. Clamped to valid range.")
 
     # Set the servo position for steering
-    servo.value = clamped_steering_direction  # -1.0 is full left, 0.0 is center, 1.0 is full right
+    if do_use_servo:
+        servo.value = clamped_steering_direction  # -1.0 is full left, 0.0 is center, 1.0 is full right
 
     # Set the motor speed
-    motor.value = clamped_motor_speed  # 0.0 is off, 1.0 is full speed
+    if do_use_motor:
+        motor.value = clamped_motor_speed  # 0.0 is off, 1.0 is full speed
