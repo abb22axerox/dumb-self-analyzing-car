@@ -8,6 +8,7 @@ led = LED(27)
 # Settings
 do_use_servo = True
 do_use_motor = True
+do_use_led = True
 
 # Initialize components
 if do_use_servo:
@@ -38,6 +39,9 @@ def drive_car(steering_direction, motor_speed):
         motor.value = clamped_motor_speed  # 0.0 is off, 1.0 is full speed
 
 def set_led_status(status):
+    if not do_use_led:
+        return
+    
     if status:
         led.on()
     else:
