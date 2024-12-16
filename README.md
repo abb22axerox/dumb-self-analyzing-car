@@ -1,77 +1,53 @@
 # AI-Driven RC Car
 
+## Overview:
+This project aims to design and program a remote-controlled car that, using AI technology and various sensors, can interact with its environment. The car can navigate its environment, take pictures of the surroundings, and describe what it sees through a speaker.
+
+## Team Members:
+- **William** – Responsible for the car's construction and hardware assembly.  
+- **Axel** – Responsible for Arduino coding and integration of electronics.    
+- **Noah** – Responsible for programming AI models for object recognition and user communication
 
 
+## Features:
+- **Object Recognition:** The camera identifies objects in the car's surroundings using AI, and navigates to avoid them.          
+- **Photography:** The car captures images of the environment and analyses them.    
+- **Spoken Feedback:** The mounted speaker describes what the car sees, for example: "I see a person in front of me." If the car detects a person in it's vicinity, it will try starting a conversation.
+- **Artificial Engine Noises:** The car mounted speaker has build in engine sounds to simulate the feeling of a real, combustion car.
 
-**A smart car that interprets its surroundings:**
-This project aims to design and program a remote-controlled car that, using AI technology and various sensors, can interact with its environment. The car can identify objects, take pictures of its surroundings, and describe what it sees through a speaker.
+## Hardware:
+- Self-build car frame
+- Webcam for image capturing
+- Speaker for voice output
+- Sensors for distance and obstacle detection
+- Arduino microcontroller
+- Software:
+- Python for AI and image recognition
+- Arduino IDE for microcontroller programming
+- Machine learning libraries: TensorFlow or OpenCV
 
-**Team Members:**
-William – Responsible for the car's construction and hardware assembly.
-Axel – Responsible for Arduino coding and integration of electronic components.
-Noah – Responsible for programming AI models for object recognition and software development.
+## Installation and Execution:
+### Requirements:
+- Arduino IDE
+- Python 3.10+
+- Libraries: OpenCV, TensorFlow, pyttsx3 (for text-to-speech synthesis)
 
-**Features:**
-Object Recognition: The camera identifies objects in the car's surroundings using AI and machine learning.
-Photography: The car captures images of the environment and stores them for analysis.
-Spoken Feedback: The speaker describes what the car sees, for example: "I see a person in front of me."
-Sensor Integration: Built-in sensors help the car navigate and detect obstacles.
-
-**Components and Technology:**
-Hardware:
-Remote-controlled car as the base
-Camera for image capturing
-Speaker for voice output
-Sensors for distance and obstacle detection
-Arduino microcontroller
-Software:
-Python for AI and image recognition
-Arduino IDE for microcontroller programming
-Machine learning libraries: TensorFlow or OpenCV
-
-**Installation and Execution:**
-Requirements
-Arduino IDE
-Python 3.10+
-Libraries: OpenCV, TensorFlow, pyttsx3 (for text-to-speech synthesis)
-Steps to Run the Project
-Hardware Setup
-Mount the sensors, camera, and speaker on the RC car.
-Software Setup
-Clone the repository:
-bash
-Copy code
-git clone https://github.com/username/ai-rc-car.git
-cd ai-rc-car
-Install Python dependencies:
-bash
-Copy code
-pip install -r requirements.txt
-Upload Arduino Code
-Open arduino_code.ino in Arduino IDE and upload it to the microcontroller.
-Start the AI System
-Run the Python script for object recognition and communication:
-bash
-Copy code
-python ai_car.py
-
-**Usage:**
-Start the car using the remote control.
-When the car identifies an object in its surroundings:
-It takes a photo.
-It provides a verbal description of the object through the speaker.
-The car navigates autonomously and avoids obstacles using sensors.
+### Steps to Run the Project
+1. Hardware setup (rc car with: raspberry pi, motor, servo, webcam, speaker)              
+2. Clone this repository (https://github.com/username/ai-rc-car.git)
+3. Open in a virtual environment
+4. Install python dependencies
+5. Navigate to DumbRobot/Main.py
+6. Alter hardware & sortware settings to match your preferences
+7. Execute Main.py
 
 **Future Improvements:**
-Implement real-time mapping of the environment.
-Enhance the car’s speech capabilities with natural language understanding.
-Add support for multiple cameras to achieve a 360° field of view.
-License
-This project is developed for educational purposes and is not licensed for commercial use.
+- Implement real-time mapping of the environment to improve the car's navigation abilities.
+- Enhance the car’s speech capabilities with more user actions, such as adjusting volume settings on demand.
+- Add support for multiple cameras to achieve a 360° field of view.
 
 **Contact:**
 
-Noah: noah.marklund@hitachigymnasiet.se
-William: william.emilsson@hitachigymansiet.se
-Axel: axel.roxenborg@hitachigymnasiet.se
-
+**Noah:** noah.marklund@hitachigymnasiet.se                                       
+**William:** william.emilsson@hitachigymansiet.se                                 
+**Axel:** axel.roxenborg@hitachigymnasiet.se                                      
