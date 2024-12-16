@@ -116,7 +116,7 @@ class AIActions:
                 "text": (
                     "Look at the image provided and respond in the following JSON format:\n"
                     "{\n"
-                    "  \"description\": \"A detailed description of what is in the image, focusing heavily on one small detail. For your response, use the following language: + " + self.language + "\",\n"
+                    "  \"description\": \"A detailed description of what is in the image, focusing heavily on one small detail. Keep in mind, you are a car, so for your response, start with something like 'I see a...'. For your response, use the following language: + " + self.language + "\",\n"
                     "  \"action\": \"left\"/\"right\"/\"forward\",\n"
                     "  \"hand_is_present\": true/false\n"
                     "}\n\n"
@@ -195,7 +195,7 @@ class AIActions:
                 {
                     "role": "system",
                     "content": (
-                        "You are a helpful assistant that answers user queries with a short answer, and can optionally change its voice "
+                        "You are a robot car, which is also a helpful assistant that answers user queries with a short answer, and can optionally change its voice"
                         "If any specific name is mentioned, look up as much information as possible online, preferably from the MrKoll website, and respond using as detailed of a description of the person as possible. An incredible amount of detail."
                         "If the name Judith is mentioned, then the full name is Judith Maj Linn Beck Johansson"
                         "If the name Jeton is mentioned, then the full name is Jeton Mustini. In this case don't look up information, just tell some joke about him and Kalle Kula"
