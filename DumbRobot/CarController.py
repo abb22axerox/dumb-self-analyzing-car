@@ -6,8 +6,8 @@ SERVO_PIN = 17
 led = LED(27)
 
 # Settings
-do_use_servo = False
-do_use_motor = False
+do_use_servo = True
+do_use_motor = True
 
 # Initialize components
 if do_use_servo:

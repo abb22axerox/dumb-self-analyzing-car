@@ -67,8 +67,8 @@ ai = AIActions(voice_language, api_key="sk-svcacct-dO8EKFhbR50o0EwRjz3r80imib9nq
 current_car_action = 'stationary'
 
 # Initialize the audio recorder and webcam
-audio_recorder = AudioRecorder(record_seconds=8, record_cooldown=5, audio_folder_path=audio_folder_path)
-webcam = WebcamCapturer(device_index=0, capture_interval=13, images_folder_path=images_folder_path)
+audio_recorder = AudioRecorder(record_seconds=8, record_cooldown=1, audio_folder_path=audio_folder_path)
+webcam = WebcamCapturer(device_index=0, capture_interval=9, images_folder_path=images_folder_path)
 
 def print_debug(text):
     if debug_mode:
