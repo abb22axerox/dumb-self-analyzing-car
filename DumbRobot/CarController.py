@@ -3,7 +3,7 @@ from gpiozero import PWMOutputDevice, Servo, LED
 # GPIO Pin Definitions
 MOTOR_PIN = 18
 SERVO_PIN = 17
-led = LED(27)
+led = LED(23)
 
 # Settings
 do_use_servo = True

@@ -44,7 +44,7 @@ voice_volume_db = 5
 engine_volume_db = -17
 current_voice = VOICES[3]
 
-#Advanced settings
+# Advanced settings
 debug_mode = True
 do_use_parallel_ai_communication = False
 
