@@ -1,5 +1,10 @@
 # AI-Driven RC Car
 
+## Related word documents (in Swedish only)
+- [Projektplan](https://abbindgym-my.sharepoint.com/:w:/g/personal/noah_marklund_hitachigymnasiet_se/EUgrKVyYN1FBp59wLT1OkuIBuyLHvajBYaMDwU090Gjh0w?e=21UwDJ)
+- [Dokumentation](https://abbindgym-my.sharepoint.com/:w:/g/personal/noah_marklund_hitachigymnasiet_se/Ebb4Bnf8MsZOqcnWNHqCmz0BhjQh7W6IMuAm5N1NJF_Aaw?e=QrOIwQ)
+- [Rapport](https://abbindgym-my.sharepoint.com/:w:/g/personal/noah_marklund_hitachigymnasiet_se/EV9GXPOuj1VBkGjL8VbPvU8BYAeFPJ3a9zzkbxvacDJg4w?e=pDmp7f)
+
 ## Overview:
 This project aims to design and program a remote-controlled car that, using AI technology and various sensors, can interact with its environment. The car can navigate its environment, take pictures of the surroundings, and describe what it sees through a speaker.
 
