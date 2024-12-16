@@ -64,7 +64,7 @@ class AIActions:
                     "If there is a wall or obstacle directly ahead, choose either \"left\" or \"right\" to avoid steering the car into a corner.\n"
                     "Keep in mind, the camera from which this picture is taken is placed on top of a small car, so only move to the side if any obstacle is VERY close to the camera.\n"
                     "If there is no immediate wall or obstacle blocking forward movement, choose \"forward\".\n"
-                    "Write the description in swedish ONLY. The action should still be written in english.\n"
+                    "Write the description in " + self.language + " ONLY. The action should still be written in english.\n"
                     "Now, analyze the image carefully and produce ONLY the JSON object as described."
                 )
             },
@@ -124,7 +124,7 @@ class AIActions:
                     "If there is a wall or obstacle directly ahead, choose either \"left\" or \"right\" to avoid steering the car into a corner.\n"
                     "If there is no immediate wall or obstacle blocking forward movement, choose \"forward\".\n"
                     "Additionally, analyze whether a human hand is visible in the image. If it is, set \"hand_is_present\" to true; otherwise, set it to false.\n"
-                    "Write the description in Swedish ONLY. The action and hand presence should still be written in English.\n"
+                    "Write the description in " + self.language + " ONLY. The action and hand presence should still be written in English.\n"
                     "Now, analyze the image carefully and produce ONLY the JSON object as described."
                 )
             },

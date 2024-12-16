@@ -1,1 +1,3 @@
-cd ~/Desktop/Programmering/Python/dumb-self-analyzing-car/DumbRobot && export OPENAI_API_KEY="sk-svcacct-dO8EKFhbR50o0EwRjz3r80imib9nqTaaeUPcZAr9BwmW08iHhTuQpq9f8xDxGT3BlbkFJ3Ee55z90UJH73WocK3DrPwMCgiIL7hk3l4vWo6wmNTlpYdRL9TLv9Dk8oyxoAA" && source myenv/bin/activate && python3 Main.py
+cd ~/Desktop/Programmering/Python/dumb-self-analyzing-car/DumbRobot && export OPENAI_API_KEY="sk-svcacct-dO8EKFhbR50o0EwRjz3r80imib9nqTaaeUPcZAr9BwmW08iHhTuQpq9f8xDxGT3BlbkFJ3Ee55z90UJH73WocK3DrPwMCgiIL7hk3l4vWo6wmNTlpYdRL9TLv9Dk8oyxoAA" && source venv/bin/activate && python3 Main.py
+
+python3 Main.py

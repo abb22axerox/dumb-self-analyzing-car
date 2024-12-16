@@ -1,12 +1,13 @@
-from gpiozero import PWMOutputDevice, Servo
+from gpiozero import PWMOutputDevice, Servo, LED
 
 # GPIO Pin Definitions
-MOTOR_PIN = 18  # Replace with your motor GPIO pin
-SERVO_PIN = 17  # Replace with your servo GPIO pin
+MOTOR_PIN = 18
+SERVO_PIN = 17
+led = LED(27)
 
 # Settings
 do_use_servo = False
-do_use_motor = True
+do_use_motor = False
 
 # Initialize components
 if do_use_servo:
@@ -35,3 +36,9 @@ def drive_car(steering_direction, motor_speed):
     # Set the motor speed
     if do_use_motor:
         motor.value = clamped_motor_speed  # 0.0 is off, 1.0 is full speed
+
+def set_led_status(status):
+    if status:
+        led.on()
+    else:
+        led.off()

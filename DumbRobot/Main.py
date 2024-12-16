@@ -36,12 +36,12 @@ ASK_FOR_QUESTIONS_TRANSLATIONS = {
 }
 
 # Primary settings
-voice_language = "English" # Supported languages: English, Swedish, German
-do_use_car_controller = False
+voice_language = "Swedish" # Supported languages: English, Swedish, German
+do_use_car_controller = True
 motor_speed = 0.5
 servo_angle_normalised = 0.5
-voice_volume_db = 0
-engine_volume_db = -20
+voice_volume_db = 5
+engine_volume_db = -17
 current_voice = VOICES[3]
 
 #Advanced settings
@@ -55,9 +55,9 @@ if do_use_car_controller:
     import CarController
     
 # Paths
-audio_folder_path = "DumbRobot/Captures/CapturedAudio"
-images_folder_path = "DumbRobot/Captures/CapturedImages"
-engine_audio_file = "DumbRobot/Data/Audio/EngineC.mp3"
+audio_folder_path = "Captures/CapturedAudio"
+images_folder_path = "Captures/CapturedImages"
+engine_audio_file = "Data/Audio/EngineC.mp3"
 
 # Other
 program_running = True
@@ -68,7 +68,7 @@ current_car_action = 'stationary'
 
 # Initialize the audio recorder and webcam
 audio_recorder = AudioRecorder(record_seconds=8, record_cooldown=5, audio_folder_path=audio_folder_path)
-webcam = WebcamCapturer(device_index=0, capture_interval=2, images_folder_path=images_folder_path)
+webcam = WebcamCapturer(device_index=0, capture_interval=13, images_folder_path=images_folder_path)
 
 def print_debug(text):
     if debug_mode:
@@ -84,6 +84,7 @@ def speak(text, voice="onyx"):
 def ask_for_questions():
     global SELECTED_ASK_FOR_QUESTIONS_TRANSLATION
     speak(SELECTED_ASK_FOR_QUESTIONS_TRANSLATION, current_voice)
+    time.sleep(2)
     return
     
 def record_and_answer():
@@ -147,8 +148,10 @@ def on_image_captured_linear(image_path):
 
     # 3. Convert AI response text back to audio and play it
     if hand_is_present:
+        CarController.set_led_status(True)
         ask_for_questions()
         record_and_answer()
+        CarController.set_led_status(False)
     elif action != 'forward':
         speak(description, current_voice)
     
@@ -197,8 +200,6 @@ def image_loop(do_use_parallel_communication):
 
     # Continuously capture frames while the program is running
     while program_running:
-        time.sleep(webcam.capture_interval)
-        
         print_debug(f"----- Frame {frame_count} -----")
         if do_use_parallel_communication:
             webcam.capture_frame(output_prefix="frame", output_suffix=frame_count, on_image_captured=on_image_captured)
@@ -207,6 +208,8 @@ def image_loop(do_use_parallel_communication):
         print_debug(f"----- Frame {frame_count} -----")
         
         frame_count += 1
+
+        time.sleep(webcam.capture_interval)
 
     webcam.release()
     

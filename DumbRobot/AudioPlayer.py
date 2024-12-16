@@ -13,7 +13,6 @@ class AudioPlayer:
         """
         def _play():
             if self.is_playing:
-                print("Audio file is already being played. Cannot play multiple audio files at once")
                 return
             self.is_playing = True
             try:
