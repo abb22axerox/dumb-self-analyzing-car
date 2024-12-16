@@ -40,7 +40,7 @@ voice_language = "Swedish" # Supported languages: English, Swedish, German
 do_use_car_controller = True
 motor_speed = 0.5
 servo_angle_normalised = 0.5
-voice_volume_db = 5
+voice_volume_db = 1
 engine_volume_db = -17
 current_voice = VOICES[3]
 
@@ -65,10 +65,11 @@ audio_player = AudioPlayer(voice_volume_db)
 engine_audio_player = AudioPlayer(engine_volume_db)
 ai = AIActions(voice_language, api_key="sk-svcacct-dO8EKFhbR50o0EwRjz3r80imib9nqTaaeUPcZAr9BwmW08iHhTuQpq9f8xDxGT3BlbkFJ3Ee55z90UJH73WocK3DrPwMCgiIL7hk3l4vWo6wmNTlpYdRL9TLv9Dk8oyxoAA")
 current_car_action = 'stationary'
+thread_lock_active = False
 
 # Initialize the audio recorder and webcam
 audio_recorder = AudioRecorder(record_seconds=8, record_cooldown=1, audio_folder_path=audio_folder_path)
-webcam = WebcamCapturer(device_index=0, capture_interval=15, images_folder_path=images_folder_path)
+webcam = WebcamCapturer(device_index=0, capture_interval=0, images_folder_path=images_folder_path)
 
 def print_debug(text):
     if debug_mode:
@@ -90,12 +91,15 @@ def ask_for_questions():
 def record_and_answer():
     global recording_count, audio_recorder
     print("Audio recording started")
+    CarController.set_led_status(True)
     audio_recorder.record_audio(output_prefix="recording", output_suffix=recording_count, on_audio_recorded=on_audio_recorded)
     recording_count += 1
     time.sleep(audio_recorder.record_cooldown)
 
 def on_audio_recorded(audio_path):
     global response_count, current_voice
+
+    CarController.set_led_status(False)
     
     # 1. Convert audio to text
     user_text = ai.audio_to_text(audio_path)
@@ -114,7 +118,7 @@ def on_audio_recorded(audio_path):
     speak(response, current_voice)
     
 def on_image_captured(image_path):
-    global response_count, current_voice, current_car_action
+    global response_count, current_voice, current_car_action, thread_lock_active
     
     # 1. Ask the AI for car instructions (using a JSON response format)
     description, action = ai.ask_about_wall_in_image(image_path)
@@ -130,9 +134,11 @@ def on_image_captured(image_path):
     # 3. Convert AI response text back to audio and play it
     if action != 'forward':
         speak(description, current_voice)
+
+    thread_lock_active = False
         
 def on_image_captured_linear(image_path):
-    global response_count, current_voice, current_car_action
+    global response_count, current_voice, current_car_action, thread_lock_active
     
     # 1. Ask the AI for car instructions and detect nearby people (using a JSON response format)
     description, action, hand_is_present = ai.ask_about_wall_and_hand_in_image(image_path)
@@ -148,12 +154,12 @@ def on_image_captured_linear(image_path):
 
     # 3. Convert AI response text back to audio and play it
     if hand_is_present:
-        CarController.set_led_status(True)
         ask_for_questions()
         record_and_answer()
-        CarController.set_led_status(False)
     elif action != 'forward':
         speak(description, current_voice)
+
+    thread_lock_active = False
     
 def check_input():
     global program_running
@@ -193,7 +199,7 @@ def audio_loop():
         record_and_answer()
 
 def image_loop(do_use_parallel_communication):
-    global frame_count, webcam
+    global frame_count, webcam, thread_lock_active
     
     # Clear old images once at the start
     webcam.clear_old_images()
@@ -201,10 +207,14 @@ def image_loop(do_use_parallel_communication):
     # Continuously capture frames while the program is running
     while program_running:
         print_debug(f"----- Frame {frame_count} -----")
+        thread_lock_active = True
         if do_use_parallel_communication:
             webcam.capture_frame(output_prefix="frame", output_suffix=frame_count, on_image_captured=on_image_captured)
         else:
             webcam.capture_frame(output_prefix="frame", output_suffix=frame_count, on_image_captured=on_image_captured_linear)
+        
+        while (thread_lock_active):
+            time.sleep(0.1)
         print_debug(f"----- Frame {frame_count} -----")
         
         frame_count += 1
@@ -212,7 +222,7 @@ def image_loop(do_use_parallel_communication):
         time.sleep(webcam.capture_interval)
 
     webcam.release()
-    
+
 def engine_audio_loop():
     while program_running:
         engine_audio_player.play_audio(file_path=engine_audio_file)

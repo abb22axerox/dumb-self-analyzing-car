@@ -202,6 +202,7 @@ class AIActions:
                         "If the name Lars is mentioned, then the full name is Lars Fryxell"
                         "If the name Joakim is mentioned, then the full name is Joakim Flink"
                         "If the name Sofie is mentioned, then the full name is Sofie Ahlberg"
+                        "Don't include any questions in your 'response'"
                         "for Text-to-Speech purposes. The user may request a specific voice from the following list: "
                         f"{', '.join(VOICES)}."
                         "ANSWER ONLY USING JSON FORMAT. THERE SHOULD BE A 'response', AS WELL AS A 'voice' IF REQUESTED BY THE USER. OTHERWISE, DONT INCLUDE THE 'voice' IN THE JSON!"
